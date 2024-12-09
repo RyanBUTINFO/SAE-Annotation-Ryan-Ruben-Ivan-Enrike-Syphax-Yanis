@@ -3,11 +3,15 @@
 public class Controller_settings extends Controller{
 
     public function action_default(){
-        $this->view->title='settings';
+        $m=Model::getModel();
+        $data=[];
+        $this->render("parametre", $data);
 
     }
 
     public function get_terms_of_use(){
-        $this->view->title='terms_of_use';
+        $m=Model::getModel();
+        $data=[];
+        $this->render("conditions", $data);
     }
 }
