@@ -3,20 +3,16 @@
 	<head>
 		<meta charset="utf-8"/>
 		<title> Annotiverse, le meilleur site de discussion en ligne !</title>
-		<!--link rel="stylesheet" href="Content/css/nobel.css"/-->
+		<link rel="stylesheet" href="Content/css/annotiverse.css"/-->
 	</head>
 	<body>
-		<nav>
-			<ul>
-				<li><a href="?controller=list&action=last"> </a></li>
-				<li><a href="?controller=set&action=form_add"> Add a Nobel prize</a></li>
-				<!-- <li><a href="?controller=list&action=pagination"> All the Nobel Prizes</a></li> -->
-				<!-- <li><a href="?controller=search"> Search among te Nobel prizes</a></li> -->
-			</ul>
-		</nav>
 
 		<header>
-			<h1><a href="?"> Bienvenue sur Annotiverse ! </a></h1>
+		    <div class="logo-container">
+        	    <img src="logo.png" alt="Logo Annotiverse"> 
+            	<h1>Annotiverse</h1>
+        	</div>
+        	<button class="logout-button">Se déconnecter</button>
 		</header>
 
 		<main>

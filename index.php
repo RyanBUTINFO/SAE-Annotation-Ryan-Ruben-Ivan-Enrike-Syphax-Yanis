@@ -7,9 +7,9 @@ require_once "Models/Model.php";
 //Inclusion de la classe Controller
 require_once "Controllers/Controller.php";
 
-//Liste des contrôleurs -- A RENSEIGNER
+//Liste des contrôleurs
 $controllers = [];
-//Nom du contrôleur par défaut-- A RENSEIGNER
+//Nom du contrôleur par défaut
 $controller_default = "";
 
 //On teste si le paramètre controller existe et correspond à un contrôleur de la liste $controllers
