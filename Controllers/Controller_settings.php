@@ -9,7 +9,7 @@ public class Controller_settings extends Controller{
 
     }
 
-    public function action_terms_of_use(){
+    public function action_conditions(){
         $m=Model::getModel();
         $data=[];
         $this->render("conditions", $data);
