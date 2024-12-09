@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whatsoop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #e0e0e0;
+            padding: 10px 20px;
+        }
+
+        header img {
+            height: 50px;
+        }
+
+        header h1 {
+            margin-left: 10px;
+            font-size: 24px;
+            color: #007BFF;
+        }
+
+        header .logout-button {
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        main {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 30%;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .sidebar div {
+            margin-bottom: 20px;
+        }
+
+        .sidebar div button {
+            margin-top: 5px;
+            padding: 10px;
+            width: 100%;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .content .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-image: url('avatar.png'); 
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="logo.png" alt="Logo Annotiverse"> 
+            <h1>Annotiverse</h1>
+        </div>
+        <button class="logout-button">Se déconnecter</button>
+    </header>
+    <main>
+        <div class="sidebar">
+            <div>
+                <p>exemple@gmail.com</p>
+                <button>Changer l'adresse mail</button>
+            </div>
+            <div>
+                <p>Conditions d'utilisation</p>
+                <button>Confirmer l'adresse mail</button>
+            </div>
+            <div>
+                <p>Changer le mot de passe</p>
+                <button>Confirmer le mot de passe</button>
+            </div>
+            <div>
+                <p>Changer le nom d'utilisateur</p>
+                <button>Confirmer le nom d'utilisateur</button>
+            </div>
+        </div>
+        <div class="content">
+            <div class="avatar"></div>
+        </div>
+    </main>
+</body>
+</html>
