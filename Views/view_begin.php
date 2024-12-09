@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8"/>
 		<title> Annotiverse, le meilleur site de discussion en ligne !</title>
-		<link rel="stylesheet" href="Content/css/annotiverse.css"/-->
+		<link rel="stylesheet" href="Content/css/annotiverse.css">
 	</head>
 	<body>
 
