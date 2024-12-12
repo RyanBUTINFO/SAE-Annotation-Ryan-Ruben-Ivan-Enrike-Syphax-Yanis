@@ -5,7 +5,7 @@
         <button>Changer l'adresse mail</button>
     </div>
     <div>
-        <p>Conditions d'utilisation</p>
+        <p>Conditions d'utilisation</p> <!-- Les conditions d'utilisation doivent être sur un affichage spécifique (comme sur la maquette) avec texte déroulant-->
         <button>Confirmer l'adresse mail</button>
     </div>
     <div>
