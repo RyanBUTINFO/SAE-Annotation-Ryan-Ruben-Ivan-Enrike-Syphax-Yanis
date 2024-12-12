@@ -1,6 +1,6 @@
 <?php
 
-$dsn = "blabla";
-$login = "login_commun";
-$password = "mdp_commun";
+$dsn = "annotiverse";
+$login = "annoti";
+$password = "verse";
 ?>

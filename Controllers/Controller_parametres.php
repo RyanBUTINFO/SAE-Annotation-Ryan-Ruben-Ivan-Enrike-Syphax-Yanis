@@ -1,6 +1,6 @@
 <?php
 
-class Controller_settings extends Controller{
+class Controller_parametres extends Controller{
 
     /**
      * Action par défaut affichant la page des paramètres.
@@ -8,7 +8,7 @@ class Controller_settings extends Controller{
     public function action_default(){
         $m=Model::getModel();
         $data=[];
-        $this->render("parametre", $data);
+        $this->render("parametres", $data);
 
     }
 
