@@ -1,5 +1,5 @@
 <?php
-class Controller_home extends Controller{
+class Controller_acceuil extends Controller{
     
     /**
      * Action par défaut affichant la page d'acceuil.

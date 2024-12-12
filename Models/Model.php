@@ -17,8 +17,8 @@ class Model
      */
     private function __construct()
     {
-        include "../credentials.php";
-        $this->bd = new PDO($dsn, $login, $mdp);
+        include __DIR__ . "/../credentials.php";
+        $this->bd = new PDO($dsn, $login, $password);
         $this->bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->bd->query("SET nameS 'utf8'");
     }
