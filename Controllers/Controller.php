@@ -36,7 +36,6 @@ abstract class Controller
 
         //On extrait les données à afficher
         extract($data);
-        echo "ALLO";
 
         //On teste si la vue existe
         $file_name = "Views/view_" . $vue . '.php';

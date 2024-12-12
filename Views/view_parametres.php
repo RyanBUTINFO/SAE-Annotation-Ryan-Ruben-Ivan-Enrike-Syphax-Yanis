@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Whatsoop</title>
-    <link rel="stylesheet" href="../Content/css/parametre.css">
+    <link rel="stylesheet" href="Content/css/parametre.css">
 </head>
 <body>
     <header>
         <div class="logo-container">
-            <img src="logo.png" alt="Logo Annotiverse"> 
+            <img src="Content/img/logo.jpg" alt="Logo Annotiverse"> 
             <h1>Annotiverse</h1>
         </div>
         <button class="logout-button">Se déconnecter</button>

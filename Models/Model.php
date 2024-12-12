@@ -54,7 +54,7 @@ WHERE
         $req->bindValue(':emotion', $_POST['emotion_cherche']);
         $req->execute();
         if (count($req->fetchAll()) == 0){
-            return "Émotion introuvable."
+            return "Émotion introuvable.";
         }
         else{
             return $req->fetchAll();
