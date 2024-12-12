@@ -1,5 +1,5 @@
 <?php
-class Controller_acceuil extends Controller{
+class Controller_accueil extends Controller{
     
     /**
      * Action par défaut affichant la page d'acceuil.
@@ -7,7 +7,7 @@ class Controller_acceuil extends Controller{
     public function action_default(){
         $m=Model::getModel();
         $data=[];
-        $this->render("home", $data);
+        $this->render("accueil", $data);
     }
 }
 ?>
