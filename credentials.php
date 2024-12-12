@@ -1,6 +1,6 @@
 <?php
 
-$dsn = "annotiverse";
+$dsn = "pgsql:host=localhost;dbname=annotiverse";
 $login = "annoti";
 $password = "verse";
 ?>

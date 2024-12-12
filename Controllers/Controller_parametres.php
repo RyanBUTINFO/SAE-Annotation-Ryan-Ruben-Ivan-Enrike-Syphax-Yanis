@@ -7,7 +7,7 @@ class Controller_parametres extends Controller{
      */
     public function action_default(){
         $m=Model::getModel();
-        $data=[];
+        $data=["a"=>"b"];
         $this->render("parametres", $data);
 
     }
