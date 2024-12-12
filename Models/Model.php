@@ -56,4 +56,25 @@ WHERE
         return $req->fetchAll();
     }
 
+    public function addMessageWithEmotion(){
+
+        $req = $this->bd->prepare('INSERT INTO TABLE message_ VALUES (
+        :message_content,
+        :sent_at,
+        :id_sender,
+        :id_recipient,
+        :annotation_sender,
+        :annotation_recipient)');
+        
+        $req->execute(array(':message_content' => $_POST['message_content'],
+        ':sent_at'=> $_POST['sent_at'],
+        ':id_sender'=> $_POST['id_sender'],
+        ':id_recipient'=> $_POST['id_recipient'],
+        ':annotation_sender'=> $_POST['annotation_sender'],
+        ':annotation_recipient'=> $_POST['annotation_recipient']));
+
+        return $req->fecthAll();
+
+    }
+
 }
