@@ -1,6 +1,6 @@
 <?php
 
-public class Controller_settings extends Controller{
+class Controller_settings extends Controller{
 
     public function action_default(){
         $m=Model::getModel();
