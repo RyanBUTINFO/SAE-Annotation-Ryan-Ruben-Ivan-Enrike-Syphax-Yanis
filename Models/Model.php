@@ -54,7 +54,7 @@ WHERE
         $req->bindValue(':emotion', $_POST['emotion_cherche']);
         $req->execute();
         if (count($req->fetchAll()) == 0){
-            return "Émotion introuvable."
+            return "Émotion introuvable.";
         }
         else{
             return $req->fetchAll();
@@ -81,6 +81,22 @@ WHERE
         return $req->fecthAll();
     }
 
-
-
+    public function getMessagesFromContent(){
+        $req = $this->bd->prepare('SELECT * FROM message_');
+        $req->execute();
+        $data = $res->fetchAll();
+        $res = [];
+        $er = '/^.' . $_POST['content_cherche'] . '.$/';
+        foreach($data as $ligne){
+            if (preg_match($er,$ligne['message_content'])){
+                array_push($res, $ligne);
+            }
+        }
+        if (count($res) == 0){
+            return "Aucun message correspondant.";
+        }
+        else{
+            return $res;
+        }
+    }
 }
