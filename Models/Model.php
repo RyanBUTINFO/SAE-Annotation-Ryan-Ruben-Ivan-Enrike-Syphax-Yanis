@@ -34,7 +34,7 @@ class Model
         return self::$instance;
     }
 
-    public function getMessagesFromEmotion($emotion)
+    public function getMessagesFromEmotion()
     {
         $req = $this->bd->prepare('SELECT 
     m.message_content, 
@@ -51,9 +51,14 @@ JOIN
     users u_recipient ON m.id_recipient = u_recipient.id_user
 WHERE 
     e.emotion_char = :emotion');
-        $req->bindValue(':emotion', $emotion);
+        $req->bindValue(':emotion', $_POST['emotion_cherche']);
         $req->execute();
-        return $req->fetchAll();
+        if (count($req->fetchAll()) == 0){
+            return "Émotion introuvable."
+        }
+        else{
+            return $req->fetchAll();
+        }
     }
 
     public function addMessageWithEmotion(){
@@ -74,7 +79,8 @@ WHERE
         ':annotation_recipient'=> $_POST['annotation_recipient']));
 
         return $req->fecthAll();
-
     }
+
+
 
 }
