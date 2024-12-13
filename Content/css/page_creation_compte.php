@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Création de compte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="page_creation_compte.css">
+</head>
+<body>
+  <div class="signup-container">
+    <h1>Création de compte</h1>
+    <form id="signup-form" method="POST">
+      <input type="email" placeholder="Votre adresse mail" id="email" name="email"required>
+      <input type="password" placeholder="Votre mot de passe" id="password" name="password"required>
+      <input type="password" placeholder="Confirmer le mot de passe" id="confirm-password" name ="confirm-password" required>
+      <div class="checkbox-container">
+        <input type="checkbox" id="terms" required>
+        <label for="terms">J'accepte les conditions d'utilisation</label>
+      </div>
+      <button type="submit" id="signup-button">Créer un compte</button>
+      <p class="already-account">
+        Vous avez déjà un compte ? <a href="page_connexion.html">Connectez-vous !</a>
+      </p>
+    </form>
+  </div>
+
+<?php
+if (isset($_POST['password'] && isset($_POST['confirm-password']))){
+  $er = "/^".$_POST['password']."$/";
+  if (!preg_match($er, $_POST['confirm-password'])){
+    
+  }
+}
+?>
+
+</body>
+</html>
