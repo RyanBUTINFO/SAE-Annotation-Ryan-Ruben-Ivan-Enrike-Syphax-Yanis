@@ -1,0 +1,83 @@
+/* style global dla mort */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Container principal */
+.login-container {
+  background-color: white;
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  width: 350px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Titre */
+.login-container h1 {
+  margin: 0 0 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Champs d'entrée */
+form input[type="email"],
+form input[type="password"] {
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  font-size: 14px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+/* Case à cocher */
+.checkbox-container {
+  text-align: left;
+  font-size: 14px;
+  margin: 15px 0;
+}
+
+/* Bouton de connexion */
+form button {
+  width: 100%;
+  padding: 15px;
+  background-color: #e63946;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #d62839;
+}
+
+/* Texte pour créer un compte */
+.create-account {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #666;
+}
+
+.create-account a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.create-account a:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,80 @@
+/* Police */
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Conteneur principal */
+.signup-container {
+  background-color: #e6e6e6;
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  width: 350px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  margin: 50px auto;
+}
+
+/* Supprimer le contour supérieur */
+.signup-container::before {
+  content: none;
+}
+
+/* Titre */
+.signup-container h1 {
+  margin: 0 0 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Champs d'entrée */
+form input[type="email"],
+form input[type="password"] {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: #f9f9f9;
+}
+
+/* Case à cocher */
+.checkbox-container {
+  text-align: left;
+  margin: 10px 0;
+  font-size: 14px;
+  width: 90%;
+  margin: 10px auto;
+}
+
+/* Bouton de création */
+form button {
+  width: 90%;
+  padding: 10px;
+  background-color: #e63946;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #d62839;
+}
+
+/* Texte pour se connecter */
+.already-account {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.already-account a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.already-account a:hover {
+  text-decoration: underline;
+}
