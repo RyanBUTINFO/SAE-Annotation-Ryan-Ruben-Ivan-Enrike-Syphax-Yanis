@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Connexion</title>
+  <link rel="shortcut icon" href="Content/img/logo_onglet.png" type="image/x-icon">
   <link rel="stylesheet" href="Content/css/page_connexion.css">
 </head>
 <body>
