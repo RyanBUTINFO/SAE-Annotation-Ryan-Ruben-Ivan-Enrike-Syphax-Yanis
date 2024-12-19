@@ -29,7 +29,8 @@ body {
 
 /* Champs d'entrée */
 form input[type="email"],
-form input[type="password"] {
+form input[type="password"],
+form input[type="text"] {
   width: 90%;
   padding: 10px;
   margin: 10px 0;

@@ -6,13 +6,14 @@
   <title>Création de compte</title>
   <link rel="shortcut icon" href="Content/img/logo_onglet.png" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="Content/css/page_creation_compte.css">
+  <link rel="stylesheet" href="Content/css/creation.css">
 </head>
 <body>
   <div class="signup-container">
     <h1>Création de compte</h1>
     <form id="signup-form" method="POST" action="?controller=compte&action=succes">
       <input type="email" placeholder="Votre adresse mail" id="email" name="email" required>
+      <input type="text" placeholder="Votre nom d'utilisateur" id="username" name="username" required>
       <input type="password" placeholder="Votre mot de passe" id="password" name="password" required>
       <input type="password" placeholder="Confirmer le mot de passe" id="confirm-password" name ="confirm-password" required>
       <div class="checkbox-container">
