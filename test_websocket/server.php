@@ -14,12 +14,12 @@ class Chat implements MessageComponentInterface {
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
-        echo "Message reçu: {$msg}\n";
-        foreach ($from->httpRequest->getConnections() as $client) {
-            if ($client !== $from) {
-                $client->send($msg);  // Transmettre le message à tous les autres clients
-            }
-        }
+        echo "Messag reçu: {$msg}\n";
+        //echo "from : {$from}\n";
+        //foreach ($from->httpRequest->getConnections() as $client) {
+            //if ($client !== $from) {
+                //$client->send($msg);  // Transmettre le message à tous les autres clients
+           
     }
 
     public function onClose(ConnectionInterface $conn) {
