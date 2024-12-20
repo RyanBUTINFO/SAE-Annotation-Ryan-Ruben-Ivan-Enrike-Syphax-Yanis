@@ -34,31 +34,17 @@ class Model
         return self::$instance;
     }
 
-    public function getMessagesFromEmotion()
+    public function getMessagesFromEmotionInConversation()
     {
-        $req = $this->bd->prepare('SELECT 
-    m.message_content, 
-    e.emotion_char AS emotion
-FROM 
-    message_ m
-JOIN 
-    annotation a_sender ON m.annotation_sender = a_sender.code_hexa
-JOIN 
-    emotion e ON a_sender.id_emotion = e.id_emotion
-JOIN 
-    users u_sender ON m.id_sender = u_sender.id_user
-JOIN 
-    users u_recipient ON m.id_recipient = u_recipient.id_user
-WHERE 
-    e.emotion_char = :emotion');
-        $req->bindValue(':emotion', $_POST['emotion_cherche']);
-        $req->execute();
-        if (count($req->fetchAll()) == 0){
-            return "Émotion introuvable.";
-        }
-        else{
-            return $req->fetchAll();
-        }
+        $req = $this->bd->prepare('SELECT m.* FROM Messages m
+        INNER JOIN Annotation a ON m.message_id = a.message_id
+        WHERE a.emotion = :emotion
+        AND m.conversation_id = :conversation_id');
+
+        $req->execute(array(':emotion' => $POST_['search_emotion'],
+        ':conversation_id' => $POST_['current_conv']));
+        $data = $req->fetchAll();
+        return $data;
     }
 
     public function addMessageWithEmotion(){
