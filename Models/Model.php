@@ -67,14 +67,16 @@ class Model
         return $req->fecthAll();
     }
 
-    public function getMessagesFromContent(){
-        $req = $this->bd->prepare('SELECT * FROM message_');
-        $req->execute();
+    public function getMessagesFromContentInConversation(){
+        $req = $this->bd->prepare('SELECT * FROM Messages m
+        INNER JOIN Conversation c ON c.conversation_id = m.conversation_id
+        WHERE c.conversation = :conversation');
+        $req->execute(array(':conversation' => $_POST['current_conv']));
         $data = $res->fetchAll();
         $res = [];
-        $er = '/^.' . $_POST['content_cherche'] . '.$/';
+        $er = '/^.' . $_POST['search_content'] . '.$/';
         foreach($data as $ligne){
-            if (preg_match($er,$ligne['message_content'])){
+            if (preg_match($er,$ligne['content'])){
                 array_push($res, $ligne);
             }
         }
