@@ -9,20 +9,30 @@ use Ratchet\Server\IoServer;
 
 // Classe pour gérer les connexions WebSocket
 class Chat implements MessageComponentInterface {
+    protected $clients;
+
+    public function __construct() {
+        $this->clients = new \SplObjectStorage; // Stocke les connexions
+    }
+
     public function onOpen(ConnectionInterface $conn) {
+        $this->clients->attach($conn); // Ajoute la connexion au stockage
         echo "Nouvelle connexion ({$conn->resourceId})\n";
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
-        echo "Messag reçu: {$msg}\n";
-        //echo "from : {$from}\n";
-        //foreach ($from->httpRequest->getConnections() as $client) {
-            //if ($client !== $from) {
-                //$client->send($msg);  // Transmettre le message à tous les autres clients
-           
+        echo "Message reçu: {$msg}\n";
+
+        // Transmettre le message à tous les clients connectés
+        foreach ($this->clients as $client) {
+            if ($client !== $from) { // N'envoie pas le message à l'émetteur
+                $client->send($msg);
+            }
+        }
     }
 
     public function onClose(ConnectionInterface $conn) {
+        $this->clients->detach($conn); // Supprime la connexion du stockage
         echo "Connexion fermée ({$conn->resourceId})\n";
     }
 
@@ -31,6 +41,8 @@ class Chat implements MessageComponentInterface {
         $conn->close();
     }
 }
+
+
 
 // Démarre le serveur WebSocket
 $server = IoServer::factory(
