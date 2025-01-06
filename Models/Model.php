@@ -89,6 +89,19 @@ class Model
     }
     public function annoterMessageEnvoyé($id_message, $annotation){
         $req = $this->bd->prepare('UPDATE message_ SET annotation_sender = :annotation WHERE id_message = :id_msg');
-        $req->execute(array(':annotation' => htmlspecialchars($annotation), ':id_msg' => htmlspecialchars($id_message)));
+        $req->execute(array(':annotation' => htmlspecialchars($annotation),
+        ':id_msg' => htmlspecialchars($id_message)));
+    }
+
+    public function createAccount(){
+        $req = $this->bd->prepare('INSERT INTO TABLE User VALUES (:username, :password, :email, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)');
+        $req->execute(array(':username' => htmlspecialchars($_POST['create_username']),
+        ':password' => htmlspecialchars($_POST['create_password']),
+        ":email" => htmlspecialchars($_POST('create_email'))
+    ));
+    }
+
+    public function connectToAccount(){
+        $req = $this->bd->prepare('UPDATE User SET last_online_at  = CURRENT_TIMESTAMP');
     }
 }
