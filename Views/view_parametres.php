@@ -10,7 +10,7 @@
 <body>
     <header>
         <img src="Content/img/logo.jpg" alt="Logo Annotiverse"> 
-        <h1>Annotiverse</h1>
+        <a href="?controller=acceuil&action acceuil"><h1 class="title">Annotiverse</h1></a>
         <button class="logout-button">Se déconnecter</button>
     </header>
     <main>

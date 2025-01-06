@@ -9,13 +9,11 @@
 </head>
 <body>
     <header>
-        <div class="logo-container">
-            <img src="Content/img/logo.jpg" alt="Logo Annotiverse" class="logo">
-        </div>
-        <h1 class="title">Annotiverse</h1>
+        <img src="Content/img/logo.jpg" alt="Logo Annotiverse" class="logo">
+        <a href="?controller=acceuil&action acceuil"><h1 class="title">Annotiverse</h1></a>
         <div class="user-options">
-            <button class="logout">Se déconnecter</button>
-            <img src="user-avatar.png" alt="Avatar utilisateur" class="user-avatar">
+            <button class="logout-button">Se déconnecter</button>
+            <a href="?controller=parametres&action=parametre"><img src="Content/img/logo.jpg" alt="Avatar utilisateur" class="user-avatar"></a>
         </div>
     </header>
 
