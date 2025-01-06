@@ -18,7 +18,10 @@ header {
     justify-content: space-between;
     align-items: center;
     background-color: #e0e0e0;
+}
 
+header a {
+    text-decoration: none;
 }
 
 header img {
@@ -43,10 +46,12 @@ header .logout-button {
 .user-options {
     display: flex;
     align-items: center;
+    margin-right: 15px;
 }
 
 .user-options img {
     border-radius: 50%;
+    height: 75px;
 }
 
 main {

@@ -6,6 +6,7 @@ socket.onopen = function() {
 };
 
 socket.onmessage = function(event) {
+    
     var message = document.createElement("p");
     message.textContent='Message reçu: ' + event.data;
     console.log(message);
@@ -24,4 +25,7 @@ function sendMessage() {
     var message = document.getElementById('messageInput').value;
     socket.send(message); // Envoi du message au serveur WebSocket
 }
+
+
+
 

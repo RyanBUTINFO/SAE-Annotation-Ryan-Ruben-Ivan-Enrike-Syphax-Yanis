@@ -6,23 +6,22 @@
     <title>Annotiverse - Accueil</title>
     <link rel="shortcut icon" href="Content/img/logo_onglet.png" type="image/x-icon">
     <link rel="stylesheet" href="Content/css/accueil.css">
+    <script src="Content/js/accueil.js"></script>
 </head>
 <body>
     <header>
-        <div class="logo-container">
-            <img src="Content/img/logo.jpg" alt="Logo Annotiverse" class="logo">
-        </div>
-        <h1 class="title">Annotiverse</h1>
+        <img src="Content/img/logo.jpg" alt="Logo Annotiverse" class="logo">
+        <a href="?controller=acceuil&action acceuil"><h1 class="title">Annotiverse</h1></a>
         <div class="user-options">
-            <button class="logout">Se déconnecter</button>
-            <img src="user-avatar.png" alt="Avatar utilisateur" class="user-avatar">
+            <button class="logout-button">Se déconnecter</button>
+            <a href="?controller=parametres&action=parametre"><img src="Content/img/logo.jpg" alt="Avatar utilisateur" class="user-avatar"></a>
         </div>
     </header>
 
     <main>
         <aside class="sidebar">
             <h2>Contacts</h2>
-            <ul class="contact-list">
+            <ul class="contact-list" id="contact">
                 <li class="contact-item">
                     <img src="mickey.png" alt="Mickey" class="contact-avatar">  
                     <div class="contact-info">
