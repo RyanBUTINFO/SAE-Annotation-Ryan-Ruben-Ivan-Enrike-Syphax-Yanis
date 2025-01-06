@@ -6,7 +6,7 @@ socket.onopen = function() {
 };
 
 socket.onmessage = function(event) {
-    console.log('Message reçu: ' + event.data);
+    
     var message = document.createElement("p");
     message.textContent='Message reçu: ' + event.data;
     console.log(message);
