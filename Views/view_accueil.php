@@ -6,6 +6,7 @@
     <title>Annotiverse - Accueil</title>
     <link rel="shortcut icon" href="Content/img/logo_onglet.png" type="image/x-icon">
     <link rel="stylesheet" href="Content/css/accueil.css">
+    <script src="Content/js/accueil.js"></script>
 </head>
 <body>
     <header>
@@ -20,7 +21,7 @@
     <main>
         <aside class="sidebar">
             <h2>Contacts</h2>
-            <ul class="contact-list">
+            <ul class="contact-list" id="contact">
                 <li class="contact-item">
                     <img src="mickey.png" alt="Mickey" class="contact-avatar">  
                     <div class="contact-info">
