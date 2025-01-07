@@ -1,6 +1,7 @@
 <?php
 require 'vendor/autoload.php'; // Chargez les dépendances de composer
 
+// bibliothèque Ratchet pour Websockets
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 use Ratchet\WebSocket\WsServer;
