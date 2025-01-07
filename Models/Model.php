@@ -94,11 +94,16 @@ class Model
     }
 
     public function createAccount(){
-        $req = $this->bd->prepare('INSERT INTO TABLE User VALUES (:username, :password, :email, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)');
-        $req->execute(array(':username' => htmlspecialchars($_POST['create_username']),
-        ':password' => password_hash($_POST['create_password'],PASSWORD_ARGON2ID),
-        ":email" => htmlspecialchars($_POST('create_email'))
-    ));
+        if(isset($_POST['create_username']) && isset($_POST['create_password']) && isset($_POST['create_email'])){
+            if(filter_var($_POST['create_email'], FILTER_VALIDATE_EMAIL) && preg_match($_POST['create_password'], '/^(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/')){
+                
+                $req = $this->bd->prepare('INSERT INTO TABLE User VALUES (:username, :password, :email, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)');
+                $req->execute(array(':username' => htmlspecialchars($_POST['create_username']),
+                ':password' => password_hash($_POST['create_password'],PASSWORD_ARGON2ID),
+                ":email" => htmlspecialchars($_POST('create_email'))
+            ));
+            }
+        }
     }
 
     public function connectToAccount(){
