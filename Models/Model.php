@@ -93,18 +93,10 @@ class Model
         ':id_msg' => htmlspecialchars($id_message)));
     }
 
-    public function hashPassword(){
-        $hashed_password = "";
-        for ($i = 0; $i < strlen($_POST['create_password']); $i++){
-            $hashed_password += $_POST['create_password'][$i];
-        }
-        return $hashed_password;
-    }
-
     public function createAccount(){
         $req = $this->bd->prepare('INSERT INTO TABLE User VALUES (:username, :password, :email, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)');
         $req->execute(array(':username' => htmlspecialchars($_POST['create_username']),
-        ':password' => hashPassword(),
+        ':password' => password_hash($_POST['create_password'],PASSWORD_ARGON2ID),
         ":email" => htmlspecialchars($_POST('create_email'))
     ));
     }
