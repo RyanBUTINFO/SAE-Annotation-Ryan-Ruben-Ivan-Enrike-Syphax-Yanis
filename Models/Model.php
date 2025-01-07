@@ -64,7 +64,7 @@ class Model
         ':annotation_sender'=> $_POST['annotation_sender'],
         ':annotation_recipient'=> $_POST['annotation_recipient']));
 
-        return $req->fecthAll();
+        return $req->fetchAll();
     }
 
     public function getMessagesFromContentInConversation(){
@@ -93,10 +93,18 @@ class Model
         ':id_msg' => htmlspecialchars($id_message)));
     }
 
+    public function hashPassword(){
+        $hashed_password = "";
+        for ($i = 0; $i < strlen($_POST['create_password']); $i++){
+            $hashed_password += $_POST['create_password'][$i];
+        }
+        return $hashed_password;
+    }
+
     public function createAccount(){
         $req = $this->bd->prepare('INSERT INTO TABLE User VALUES (:username, :password, :email, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)');
         $req->execute(array(':username' => htmlspecialchars($_POST['create_username']),
-        ':password' => htmlspecialchars($_POST['create_password']),
+        ':password' => hashPassword(),
         ":email" => htmlspecialchars($_POST('create_email'))
     ));
     }
@@ -104,4 +112,5 @@ class Model
     public function connectToAccount(){
         $req = $this->bd->prepare('UPDATE User SET last_online_at  = CURRENT_TIMESTAMP');
     }
+
 }
