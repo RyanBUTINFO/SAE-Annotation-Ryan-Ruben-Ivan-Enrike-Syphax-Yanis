@@ -6,9 +6,14 @@
 </head>
 <body>
     <h1>Test WebSocket</h1>
+    <!-- Champ de saisie pour entrer un message -->
     <textarea id="messageInput" placeholder="Entrez un message"></textarea><br>
     <button onclick="sendMessage()">Envoyer</button>
 
+    <!-- Pour voir les messages reçues -->
+    <h2>Messages reçus :</h2>
+    <div id="messagesContainer"></div>
+    
     <!-- Inclure le fichier JavaScript externe -->
     <script src="js/websocket.js"></script>
 </body>
