@@ -11,10 +11,10 @@
   <div class="login-container">
     <h1>Connexion</h1>
     <form id="login-form" action="?controller=compte&action=succes">
-      <input type="email" placeholder="Votre adresse mail" id="email" required>
-      <input type="password" placeholder="Votre mot de passe" id="password" required>
+      <input type="email" placeholder="Votre adresse mail" id="email" name="mail" required>
+      <input type="password" placeholder="Votre mot de passe" id="password" name="password" required>
       <div class="checkbox-container">
-        <input type="checkbox" id="terms" required>
+        <input type="checkbox" id="terms" name="terms" required>
         <label for="terms">J'accepte les conditions d'utilisation</label>
       </div>
       <button type="submit" id="login-button">Se connecter</button>

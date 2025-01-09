@@ -17,7 +17,7 @@
       <input type="password" placeholder="Votre mot de passe" id="password" name="password" required>
       <input type="password" placeholder="Confirmer le mot de passe" id="confirm-password" name ="confirm-password" required>
       <div class="checkbox-container">
-        <input type="checkbox" id="terms" required>
+        <input type="checkbox" id="terms" name="terms" required>
         <label for="terms">J'accepte les conditions d'utilisation</label>
       </div>
       <button type="submit" id="signup-button">Créer un compte</button>
