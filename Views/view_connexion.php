@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Connexion</title>
   <link rel="shortcut icon" href="Content/img/logo_onglet.png" type="image/x-icon">
-  <link rel="stylesheet" href="Content/css/page_connexion.css">
+  <link rel="stylesheet" href="Content/css/connexion.css">
 </head>
 <body>
-  <div class="login-container">
+  <div class="account-container">
     <h1>Connexion</h1>
-    <form id="login-form" action="?controller=compte&action=succes">
+    <form id="account-form" action="?controller=compte&action=succes">
       <input type="email" placeholder="Votre adresse mail" id="email" name="mail" required>
       <input type="password" placeholder="Votre mot de passe" id="password" name="password" required>
       <div class="checkbox-container">

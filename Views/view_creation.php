@@ -6,12 +6,12 @@
   <title>Création de compte</title>
   <link rel="shortcut icon" href="Content/img/logo_onglet.png" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="Content/css/creation.css">
+  <link rel="stylesheet" href="Content/css/connexion.css">
 </head>
 <body>
-  <div class="signup-container">
+  <div class="account-container">
     <h1>Création de compte</h1>
-    <form id="signup-form" method="POST" action="?controller=compte&action=succes">
+    <form id="account-form" method="POST" action="?controller=compte&action=succes">
       <input type="email" placeholder="Votre adresse mail" id="email" name="email" required>
       <input type="text" placeholder="Votre nom d'utilisateur" id="username" name="username" required>
       <input type="password" placeholder="Votre mot de passe" id="password" name="password" required>
@@ -21,8 +21,8 @@
         <label for="terms">J'accepte les conditions d'utilisation</label>
       </div>
       <button type="submit" id="signup-button">Créer un compte</button>
-      <p class="already-account">
-        Vous avez déjà un compte ? <a href="?controller=compte&action=creation">Connectez-vous !</a>
+      <p class="create-account">
+        Vous avez déjà un compte ? <a href="?controller=compte&action=connexion">Connectez-vous !</a>
       </p>
     </form>
   </div>

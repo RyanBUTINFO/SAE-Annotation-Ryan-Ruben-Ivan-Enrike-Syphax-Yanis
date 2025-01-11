@@ -11,7 +11,7 @@ body {
 }
 
 /* Container principal */
-.login-container {
+.account-container {
   background-color: white;
   border-radius: 20px;
   padding: 30px;
@@ -21,7 +21,7 @@ body {
 }
 
 /* Titre */
-.login-container h1 {
+.account-container h1 {
   margin: 0 0 20px;
   font-size: 24px;
   font-weight: bold;
@@ -30,8 +30,9 @@ body {
 
 /* Champs d'entrée */
 form input[type="email"],
-form input[type="password"] {
-  width: 100%;
+form input[type="password"],
+form input[type="text"] {
+  width: 90%;
   padding: 15px;
   margin: 10px 0;
   border: 1px solid #ccc;
