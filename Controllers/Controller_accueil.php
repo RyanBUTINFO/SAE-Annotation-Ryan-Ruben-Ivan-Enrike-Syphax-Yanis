@@ -15,7 +15,7 @@ class Controller_accueil extends Controller{
             $m->addMessageWithEmotion();
         }
         $data=[];
-        $this->render("acceuil", $data);
+        $this->render("accueil", $data);
     }
 }
 ?>

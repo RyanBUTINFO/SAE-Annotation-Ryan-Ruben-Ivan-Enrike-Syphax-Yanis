@@ -31,7 +31,7 @@ class Controller_compte extends Controller{
         } else {
             $data=["error"=>"Erreur lors de la création du compte."]; 
         }
-        $this->render("succes", $data);
+        $this->render("success", $data);
     }
 
     /**
@@ -45,7 +45,7 @@ class Controller_compte extends Controller{
         } else {
             $data=["error"=>"Erreur lors de la connexion du compte."]; 
         }
-        $this->render("succes", $data);
+        $this->render("success", $data);
     }
 }
 ?>

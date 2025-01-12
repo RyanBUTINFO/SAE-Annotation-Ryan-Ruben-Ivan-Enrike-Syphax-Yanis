@@ -11,10 +11,10 @@
 <body>
     <header>
         <img src="Content/img/logo.jpg" alt="Logo Annotiverse" class="logo">
-        <a href="?controller=acceuil&action acceuil"><h1 class="title">Annotiverse</h1></a>
+        <a href="?controller=accueil&action=accueil"><h1 class="title">Annotiverse</h1></a>
         <div class="user-options">
             <button class="logout-button">Se déconnecter</button>
-            <a href="?controller=parametres&action=parametre"><img src="Content/img/logo.jpg" alt="Avatar utilisateur" class="user-avatar"></a>
+            <a href="?controller=parametres&action=parametres"><img src="Content/img/logo.jpg" alt="Avatar utilisateur" class="user-avatar"></a>
         </div>
     </header>
 
@@ -78,5 +78,6 @@
             <div class="chat-placeholder"></div>
         </section>
     </main>
+    <script src="Content/js/websocket.js"></script>
 </body>
 </html>

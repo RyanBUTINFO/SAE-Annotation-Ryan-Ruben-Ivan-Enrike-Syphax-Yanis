@@ -20,7 +20,7 @@
       <span>Roi</span>
     </p>
     <form>
-      <button formaction="?controller=home" class="continue-button">Continuer</button>
+      <button formaction="?controller=accueil" class="continue-button">Continuer</button>
     </form>
   </div>
   <?php else: ?>
@@ -30,7 +30,7 @@
       <strong><?=$error?></strong>
     </p>
     <form>
-      <button formaction="?controller=home" class="continue-button">Continuer</button>
+      <button formaction="?controller=accueil" class="continue-button">Continuer</button>
     </form>
   </div>
   <?php endif; ?>
