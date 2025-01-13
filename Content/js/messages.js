@@ -1,3 +1,5 @@
+import * as websocket from './websocket.js';
+
 function displayContactDiscussion(){
     let contacts = document.querySelectorAll('.contact');
 
