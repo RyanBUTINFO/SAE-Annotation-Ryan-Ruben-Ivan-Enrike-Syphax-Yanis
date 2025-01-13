@@ -27,7 +27,10 @@
 
 // Nouvelle Version 
 // Connexion WebSocket au serveur PHP
-var socket = new WebSocket('ws://127.0.0.1:8080'); // Adresse de votre serveur WebSocket
+function connectToWebsocket(){
+    var socket = new WebSocket('ws://127.0.0.1:8080'); // Adresse de votre serveur WebSocket
+}
+
 
 socket.onopen = function() {
     console.log('Connexion WebSocket établie');
