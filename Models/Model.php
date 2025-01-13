@@ -20,7 +20,7 @@ class Model
         include "credentials.php";
         $this->bd = new PDO($dsn, $login, $password);
         $this->bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->bd->query("SET nameS 'utf8'");
+        $this->bd->exec("SET NAMES 'utf8'");
     }
 
     /**
