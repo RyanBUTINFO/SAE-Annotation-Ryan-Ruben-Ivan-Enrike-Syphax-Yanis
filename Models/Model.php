@@ -99,13 +99,28 @@ class Model
                 $req = $this->bd->prepare('INSERT INTO TABLE User VALUES (:username, :password, :email, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)');
                 $req->execute(array(':username' => htmlspecialchars($_POST['create_username']),
                 ':password' => password_hash($_POST['create_password'],PASSWORD_ARGON2ID),
-                ":email" => htmlspecialchars($_POST('create_email'))
+                ":email" => htmlspecialchars($_POST['create_email'])
             ));
+
+                session_start();
+                $_SESSION['user_id'] = $this->bd->lastInsertId();
+                $_SESSION['username'] = $_POST['create_username'];
         }
     }
 
-    public function connectToAccount(){
-        $req = $this->bd->prepare('UPDATE User SET last_online_at  = CURRENT_TIMESTAMP');
+    function connectToAccount() {
+        $req = $this->bd->prepare("SELECT * FROM User WHERE email = :email");
+        $req->execute(array(':email' => $_POST['connect_email']));
+        $user = $req->fetch(PDO::FETCH_ASSOC);
+    
+        if ($user && password_verify($_POST['connect_password'], $user['password_hash'])) {
+            
+            $update = $this->bd->prepare("UPDATE User SET last_online_at = CURRENT_TIMESTAMP WHERE user_id = :user_id");
+            $update->execute(array(':user_id' => $user['user_id']));
+            
+            session_start();
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['username'] = $user['username'];
+        }
     }
-
 }
