@@ -3,7 +3,7 @@ class Controller_accueil extends Controller{
     
     public function action_default(){
         $m=Model::getModel();
-        $data=["messages" => $m->getMessageFromContentInConversation()];
+        $data=["messages" => $m->getMessagesFromContentInConversation()];
         $this->render("accueil", $data);
     }
 
