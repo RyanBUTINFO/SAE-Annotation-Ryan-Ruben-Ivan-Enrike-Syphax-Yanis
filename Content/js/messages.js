@@ -1,4 +1,4 @@
-import * as websocket from './websocket.js';
+import * as websocket from '../test_websocket/src/js/websocket.js';
 
 function displayContactDiscussion(){
     let contacts = document.querySelectorAll('.contact');
@@ -11,6 +11,12 @@ function displayContactDiscussion(){
 
             document.getElementById('current-contact').textContent = contactName;
             document.getElementById('current-contact-pfp').src = contactPfp;
-        })
+        });
     });
+}
+
+function fetchMessages($contact){
+    if (websocket && websocket.readyState === WebSocket.OPEN){
+
+    }
 }
