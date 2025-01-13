@@ -5,17 +5,25 @@
     <title>Test WebSocket</title>
 </head>
 <body>
-    <h1>Test WebSocket</h1>
-    <!-- Champ de saisie pour entrer un message -->
-    <textarea id="messageInput" placeholder="Entrez un message"></textarea><br>
-    <button onclick="sendMessage()">Envoyer</button>
+    <div class="chat-container" data-user-id="123">
+        <header class="chat-header">
+            <h2>Discussion</h2>
+        </header>
+        <main id="messagesContainer" class="chat-messages">
+            
+            <!-- Messages s'afficheront ici -->
+        </main>
+        <footer class="chat-input">
+            <input type="hidden" id="recipientId" value="456"> <!-- ID du destinataire -->
+            <textarea id="messageInput" placeholder="Écrivez un message..."></textarea>
+            <button onclick="sendMessage()">Envoyer</button>
+        </footer>
+    </div>
 
-    <!-- Pour voir les messages reçues -->
-    <h2>Messages reçus :</h2>
-    <div id="messagesContainer"></div>
-    
     <!-- Inclure le fichier JavaScript externe -->
     <script src="js/websocket.js"></script>
 </body>
 </html>
+
+
 
