@@ -10,7 +10,7 @@ class Chat implements MessageComponentInterface {
 
     public function __construct() {
         $this->clients = new \SplObjectStorage; // Stocke les connexions
-        echo "Serveur démarré "
+        echo "Serveur démarré ";
     }
 
     public function onOpen(ConnectionInterface $conn) {
