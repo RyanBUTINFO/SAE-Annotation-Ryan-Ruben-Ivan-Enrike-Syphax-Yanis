@@ -87,10 +87,10 @@ class Model
             return $res;
         }
     }
-    public function annoterMessageEnvoyé($id_message, $annotation){
+    public function annotateMessageSent(){
         $req = $this->bd->prepare('UPDATE message_ SET annotation_sender = :annotation WHERE id_message = :id_msg');
-        $req->execute(array(':annotation' => htmlspecialchars($annotation),
-        ':id_msg' => htmlspecialchars($id_message)));
+        $req->execute(array(':annotation' => htmlspecialchars($_POST['annotation']),
+        ':id_msg' => htmlspecialchars($_POST['message_id'])));
     }
 
     public function createAccount(){
