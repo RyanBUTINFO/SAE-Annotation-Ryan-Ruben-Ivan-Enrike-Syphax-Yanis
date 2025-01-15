@@ -106,13 +106,13 @@ class Model
     }
 
     public function connectToAccount() {
-        $req = $this->bd->prepare("SELECT * FROM User WHERE email = :email");
-        $req->execute(array(':email' => $_POST['connect_email']));
+        $req = $this->bd->prepare("SELECT * FROM Users WHERE email = :email");
+        $req->execute(array(':email' => $_POST['mail']));
         $user = $req->fetch(PDO::FETCH_ASSOC);
     
-        if ($user && password_verify($_POST['connect_password'], $user['password_hash'])) {
+        if ($user && password_verify($_POST['password'], $user['password_hash'])) {
             
-            $update = $this->bd->prepare("UPDATE User SET last_online_at = CURRENT_TIMESTAMP WHERE user_id = :user_id");
+            $update = $this->bd->prepare("UPDATE Users SET last_online_at = CURRENT_TIMESTAMP WHERE user_id = :user_id");
             $update->execute(array(':user_id' => $user['user_id']));
             
             session_start();
