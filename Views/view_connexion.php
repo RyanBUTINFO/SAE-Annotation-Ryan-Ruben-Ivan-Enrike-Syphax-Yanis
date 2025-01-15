@@ -10,7 +10,7 @@
 <body>
   <div class="account-container">
     <h1>Connexion</h1>
-    <form id="account-form" action="?controller=compte&action=success">
+    <form id="account-form" action="?controller=compte&action=succes_connexion" method="POST">
       <input type="email" placeholder="Votre adresse mail" id="email" name="mail" required>
       <input type="password" placeholder="Votre mot de passe" id="password" name="password" required>
       <div class="checkbox-container">

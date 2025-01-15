@@ -11,8 +11,8 @@
 <body>
   <div class="account-container">
     <h1>Création de compte</h1>
-    <form id="account-form" method="POST" action="?controller=compte&action=succes">
-      <input type="email" placeholder="Votre adresse mail" id="email" name="email" required>
+    <form id="account-form" method="POST" action="?controller=compte&action=succes_creation">
+      <input type="email" placeholder="Votre adresse mail" id="email" name="mail" required>
       <input type="text" placeholder="Votre nom d'utilisateur" id="username" name="username" required>
       <input type="password" placeholder="Votre mot de passe" id="password" name="password" required>
       <input type="password" placeholder="Confirmer le mot de passe" id="confirm-password" name ="confirm-password" required>

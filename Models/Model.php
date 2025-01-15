@@ -94,18 +94,15 @@ class Model
     }
 
     public function createAccount(){
-        if(filter_var($_POST['create_email'], FILTER_VALIDATE_EMAIL) && preg_match($_POST['create_password'], '/^(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/')){
-                
-            $req = $this->bd->prepare('INSERT INTO TABLE User VALUES (:username, :password, :email, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)');
-            $req->execute(array(':username' => htmlspecialchars($_POST['create_username']),
-            ':password' => password_hash($_POST['create_password'],PASSWORD_ARGON2ID),
-            ":email" => htmlspecialchars($_POST['create_email'])
-        ));
+        $req = $this->bd->prepare('INSERT INTO Users VALUES (DEFAULT, :username, :password, :email, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)');
+        $req->execute([':username' => htmlspecialchars($_POST['username']),
+            ':password' => password_hash($_POST['password'],PASSWORD_ARGON2ID),
+            ":email" => htmlspecialchars($_POST['mail'])]
+        );
 
             session_start();
             $_SESSION['user_id'] = $this->bd->lastInsertId();
-            $_SESSION['username'] = $_POST['create_username'];
-        }
+            $_SESSION['username'] = $_POST['username'];
     }
 
     public function connectToAccount() {
@@ -122,5 +119,17 @@ class Model
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['username'] = $user['username'];
         }
+    }
+
+    public function checkMailExists($mail) {
+        $req = $this->bd->prepare('SELECT COUNT(*) FROM Users WHERE email = :email');
+        $req->execute(array(':email' => $mail));
+        return $req->fetchColumn() > 0;
+    }
+
+    public function getUsername() {
+        $req = $this->bd->prepare('SELECT username FROM Users WHERE user_id = :user_id');
+        $req->execute(array(':user_id' => $_SESSION['user_id']));
+        return $req->fetchColumn();
     }
 }

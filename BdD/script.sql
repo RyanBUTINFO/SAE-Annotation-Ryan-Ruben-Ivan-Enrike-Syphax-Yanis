@@ -1,7 +1,10 @@
-CREATE TABLE Users(user_id INT PRIMARY KEY,
+DROP TABLE IF EXISTS Annotation, Messages, Conversation, UserStatus, Users;
+DROP TYPE IF EXISTS emotions;
+
+CREATE TABLE Users(user_id SERIAL PRIMARY KEY,
 username VARCHAR(50) NOT NULL,
 password_hash VARCHAR(255) NOT NULL,
-email VARCHAR(100) NOT NULL,
+email VARCHAR(100) NOT NULL UNIQUE,
 created_at TIMESTAMP,
 last_online_at TIMESTAMP);
 

@@ -17,7 +17,7 @@
     </div>
     <p class="welcome-text">
       <strong><?=$success?></strong><br>
-      <span>Roi</span>
+      <span><?=$username?></span>
     </p>
     <form>
       <button formaction="?controller=accueil" class="continue-button">Continuer</button>
