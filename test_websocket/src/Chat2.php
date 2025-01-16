@@ -22,32 +22,40 @@ class Chat implements MessageComponentInterface {
         // Décoder le message JSON
         $data = json_decode($msg, true);
 
-        if (!isset($data['action'])) {
-            echo "Erreur : action non spécifiée\n";
-            return;
-        }
+       // Vérifie si l'action est définie
+    if (!isset($data['action'])) {
+        echo "Erreur : action non spécifiée\n";
+        return;
+    }
 
-        switch ($data['action']) {
-            case 'register':
-                if (isset($data['userId'])) {
-                    $this->clients[$from]["userId"] = $data['userId'];
-                    echo "Utilisateur {$data['userId']} enregistré\n";
-                } else {
-                    echo "Erreur : userId manquant\n";
-                }
-                break;
+    switch ($data['action']) {
+        case 'register':
+            if (isset($data['userId'])) {
+                $this->clients[$from]["userId"] = $data['userId'];
+                echo "Utilisateur {$data['userId']} enregistré\n";
 
-            case 'sendMessage':
-                if (isset($data['recipientId'], $data['content'])) {
-                    $this->sendMessageToRecipient($from, $data['recipientId'], $data['content']);
-                } else {
-                    echo "Erreur : recipientId ou content manquant\n";
-                }
-                break;
+                // Diffuser la liste des utilisateurs connectés
+                $this->broadcastUserList();
+            } else {
+                echo "Erreur : userId manquant\n";
+            }
+            break;
 
-            default:
-                echo "Action inconnue : {$data['action']}\n";
-        }
+        case 'sendMessage':
+            if (isset($data['recipientId'], $data['content'])) {
+                $this->sendMessageToRecipient($from, $data['recipientId'], $data['content']);
+            } else {
+                echo "Erreur : recipientId ou content manquant\n";
+            }
+            break;
+
+        case 'userList': // Nouvelle action : envoie la liste des utilisateurs connectés au demandeur
+            $this->sendUserListToClient($from);
+            break;
+
+        default:
+            echo "Action inconnue : {$data['action']}\n";
+    }
     }
 
 
@@ -81,10 +89,53 @@ class Chat implements MessageComponentInterface {
         echo "Erreur : {$e->getMessage()}\n";
         $conn->close();
     }
+
+    
+
+    private function broadcastUserList(){
+        $online_users = [];
+       
+        //il faut récupérer les ID des utilisateurs connectés
+        foreach ($this->clients as $client) {
+            if(!is_null($this->clients[$client]["userId"])){
+                $online_users[] = $this->clients[$client]["userId"];
+            }
+        }
+
+        // Envoie la liste des utilisateurs à tous les clients
+    foreach ($this->clients as $client) {
+        $client->send(json_encode([
+            "action" => "online_users",
+            "users" => $online_users
+        ]));
+    }
+
+    }
+
+
+    private function sendUserListToClient(ConnectionInterface $client) {
+        $userList = [];
+    
+        // Récupère les IDs des utilisateurs connectés
+        foreach ($this->clients as $conn) {
+            if (!is_null($this->clients[$conn]["userId"])) {
+                $userList[] = $this->clients[$conn]["userId"];
+            }
+        }
+    
+        // Envoie la liste des utilisateurs à ce client uniquement
+        $client->send(json_encode([
+            "action" => "userList",
+            "users" => $userList
+        ]));
+    }
+
+   
+
+
 }
 
 
- 
 use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 use Ratchet\Server\IoServer;

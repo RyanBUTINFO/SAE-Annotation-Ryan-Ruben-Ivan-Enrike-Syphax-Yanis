@@ -25,6 +25,12 @@ conn.onmessage = function (event) {
     } else {
         console.warn("Données reçues inattendues :", data);
     }
+
+    if (data.action === "userList") {
+        updateUserList(data.users); // Mets à jour la liste des utilisateurs
+    } else if (data.from && data.content) {
+        displayMessage(data.from, data.content); // Affiche le message reçu
+    }
 };
 
 // Gestion des erreurs WebSocket
@@ -66,4 +72,28 @@ function displayMessage(from, content) {
     var messageElement = document.createElement('p'); // Crée un élément paragraphe
     messageElement.textContent = `De ${from} : ${content}`; // Ajoute le contenu du message
     messageContainer.appendChild(messageElement); // Ajoute le message au conteneur
+}
+
+
+function updateConnectedUsers (users){
+    var userListContainer = document.querySelector('online_users');// onlineusers
+    userListContainer.innerHTML = ""; // Réinitialise la liste
+
+    users.forEach(function (userId) {
+        var userElement = document.createElement('div');
+        userElement.textContent = `Utilisateur : ${userId}`;
+        userElement.onclick = function () {
+            document.getElementById('recipientInput').value = userId; // Définit l'ID du destinataire
+        };
+        userListContainer.appendChild(userElement);
+    });
+
+
+
+}
+
+function requestUserList() {
+    conn.send(JSON.stringify({
+        action: "userList"
+    }));
 }
