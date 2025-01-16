@@ -1,51 +1,69 @@
-// Connexion au serveur WebSocket
-var socket = new WebSocket('ws://127.0.0.1:8080');
+// Connexion WebSocket au serveur
+var conn = new WebSocket('ws://127.0.0.1:8080'); // Adresse de ton serveur WebSocket
 
-socket.onopen = function () {
+// Gestion des événements de connexion
+conn.onopen = function () {
     console.log('Connexion WebSocket établie');
-
-    // Enregistre l'utilisateur après connexion
-    const userId = document.body.dataset.userId; // Suppose que l'ID utilisateur est dans un attribut `data-user-id`
-    socket.send(JSON.stringify({ action: 'register', userId: userId }));
+    
+    // Enregistre l'utilisateur auprès du serveur
+    conn.send(JSON.stringify({
+        action: "register",
+        userId: "123" // Remplace par l'ID unique de l'utilisateur
+    }));
 };
 
-socket.onmessage = function (event) {
-    const data = JSON.parse(event.data);
+// Gestion des messages reçus
+conn.onmessage = function (event) {
+    console.log("Message reçu :", event.data);
 
-    if (data.action === 'newMessage') {
-        // Affiche le message dans l'interface
-        const messageContainer = document.getElementById('messagesContainer');
-        const message = document.createElement('p');
-        message.textContent = `${data.senderId}: ${data.content}`;
-        messageContainer.appendChild(message);
+    // Décoder le message JSON
+    var data = JSON.parse(event.data);
+
+    // Vérifie si les données reçues contiennent un message
+    if (data.from && data.content) {
+        displayMessage(data.from, data.content); // Affiche le message reçu
+    } else {
+        console.warn("Données reçues inattendues :", data);
     }
 };
 
-socket.onerror = function (error) {
-    console.error('Erreur WebSocket :', error);
+// Gestion des erreurs WebSocket
+conn.onerror = function (error) {
+    console.error('Erreur WebSocket:', error);
 };
 
-socket.onclose = function () {
+// Gestion de la fermeture de la connexion
+conn.onclose = function () {
     console.log('Connexion WebSocket fermée');
 };
 
 // Fonction pour envoyer un message
-// fonction senMessage() appelé dans index.html 
 function sendMessage() {
-    const content = document.getElementById('messageInput').value;
-    const recipientId = document.getElementById('recipientId').value; // ID du destinataire
-    const senderId = document.body.dataset.userId;
+    var messageContent = document.getElementById('messageInput').value; // Contenu du message
+    var recipientId = document.getElementById('recipientInput').value; // ID du destinataire
 
-    socket.send(JSON.stringify({
-        action: 'sendMessage',
-        senderId: senderId,
-        recipientId: recipientId,
-        content: content
-    }));
+    // Vérifie si les champs sont remplis
+    if (messageContent && recipientId) {
+        // Envoie un message au serveur
+        conn.send(JSON.stringify({
+            action: "sendMessage",
+            senderId: "123", // Remplace par l'ID de l'utilisateur actuel
+            recipientId: recipientId,
+            content: messageContent
+        }));
+        console.log("Message envoyé :", messageContent);
 
-    // Ajoute le message à la discussion
-    const messageContainer = document.getElementById('messagesContainer');
-    const message = document.createElement('p');
-    message.textContent = `Vous: ${content}`;
-    messageContainer.appendChild(message);
+        // Réinitialise le champ de saisie du message
+        document.getElementById('messageInput').value = "";
+    } else {
+        alert("Veuillez entrer un message et un destinataire !");
+    }
+}
+
+// Fonction pour afficher les messages dans l'interface utilisateur
+function displayMessage(from, content) {
+    var messageContainer = document.getElementById('messageContainer'); // Div pour afficher les messages
+    var messageElement = document.createElement('p'); // Crée un élément paragraphe
+    messageElement.textContent = `De ${from} : ${content}`; // Ajoute le contenu du message
+    messageContainer.appendChild(messageElement); // Ajoute le message au conteneur
 }
