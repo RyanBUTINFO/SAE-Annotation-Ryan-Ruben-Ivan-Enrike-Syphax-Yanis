@@ -8,7 +8,6 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-
         #messageContainer, #userList {
             border: 1px solid #ccc;
             padding: 10px;
@@ -16,14 +15,12 @@
             height: 300px;
             overflow-y: auto;
         }
-
-        #messageInput, #recipientInput {
+        #messageInput, #recipientInput, #userIdInput {
             width: 100%;
             margin-bottom: 10px;
             padding: 10px;
             font-size: 14px;
         }
-
         button {
             padding: 10px 20px;
             background-color: #007BFF;
@@ -32,11 +29,9 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
         button:hover {
             background-color: #0056b3;
         }
-
         h2 {
             color: #333;
         }
@@ -45,25 +40,25 @@
 <body>
     <h1>Chat WebSocket</h1>
 
+    <!-- Enregistrement de l'utilisateur -->
+    <input id="userIdInput" placeholder="Entrez votre ID utilisateur" />
+    <button onclick="registerUser()">S'enregistrer</button>
+
     <!-- Liste des utilisateurs connectés -->
     <div id="userList">
         <h2>Utilisateurs connectés</h2>
-        <!-- Les utilisateurs connectés apparaîtront ici -->
     </div>
-    <button onclick="requestUserList()">Rafraîchir la liste</button>
 
-    <!-- Conteneur pour afficher les messages -->
+    <!-- Messages reçus -->
     <div id="messageContainer">
         <h2>Messages</h2>
-        <!-- Les messages reçus apparaîtront ici -->
     </div>
 
-    <!-- Champs pour entrer un message -->
+    <!-- Envoi de message -->
     <input id="recipientInput" placeholder="ID du destinataire" />
     <textarea id="messageInput" placeholder="Entrez un message"></textarea>
     <button onclick="sendMessage()">Envoyer</button>
 
-    <script src="js/websocket.js"></script>
+    <script src="websocket.js"></script>
 </body>
 </html>
-

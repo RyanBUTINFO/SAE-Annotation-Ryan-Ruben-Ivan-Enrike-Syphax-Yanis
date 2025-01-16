@@ -1,4 +1,5 @@
-<?php require '../vendor/autoload.php';
+<?php
+require 'vendor/autoload.php';
 
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
@@ -7,82 +8,48 @@ class Chat implements MessageComponentInterface {
     protected $clients;
 
     public function __construct() {
-        $this->clients = new \SplObjectStorage; // Stocke les connexions
+        $this->clients = new \SplObjectStorage;
     }
 
     public function onOpen(ConnectionInterface $conn) {
-        // Stocke la connexion nouvellement ouverte
-        $this->clients->attach($conn,["userId" => null]);
+        $this->clients->attach($conn);
         echo "Nouvelle connexion ({$conn->resourceId})\n";
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
-        echo "Message reçu : $msg\n";
-
-        // Décoder le message JSON
         $data = json_decode($msg, true);
 
-       // Vérifie si l'action est définie
-    if (!isset($data['action'])) {
-        echo "Erreur : action non spécifiée\n";
-        return;
-    }
-
-    switch ($data['action']) {
-        case 'register':
-            if (isset($data['userId'])) {
-                $this->clients[$from]["userId"] = $data['userId'];
-                echo "Utilisateur {$data['userId']} enregistré\n";
-
-                // Diffuser la liste des utilisateurs connectés
-                $this->broadcastUserList();
-            } else {
-                echo "Erreur : userId manquant\n";
-            }
-            break;
-
-        case 'sendMessage':
-            if (isset($data['recipientId'], $data['content'])) {
-                $this->sendMessageToRecipient($from, $data['recipientId'], $data['content']);
-            } else {
-                echo "Erreur : recipientId ou content manquant\n";
-            }
-            break;
-
-        case 'userList': // Nouvelle action : envoie la liste des utilisateurs connectés au demandeur
-            $this->sendUserListToClient($from);
-            break;
-
-        default:
-            echo "Action inconnue : {$data['action']}\n";
-    }
-    }
-
-
-
-    private function sendMessageToRecipient(ConnectionInterface $from, $recipientId, $content) {
-        $senderId = $this->clients[$from]["userId"] ?? "Inconnu";
-
-        foreach ($this->clients as $client) {
-            if ($this->clients[$client]["userId"] === $recipientId) {
-                $client->send(json_encode([
-                    "from" => $senderId,
-                    "content" => $content
-                ]));
-                echo "Message de {$senderId} \u00e0 {$recipientId} : {$content}\n";
-                return;
-            }
+        if (!isset($data['action'])) {
+            echo "Action non spécifiée\n";
+            return;
         }
 
-        echo "Erreur : destinataire {$recipientId} introuvable\n";
-    }
+        switch ($data['action']) {
+            case 'register':
+                $userId = $data['userId'] ?? uniqid();
+                $this->clients[$from] = ["userId" => $userId];
+                echo "Utilisateur {$userId} enregistré\n";
 
-        
+                // Diffuser la liste des utilisateurs
+                $this->broadcastUserList();
+                break;
+
+            case 'sendMessage':
+                $this->sendMessageToRecipient($from, $data['recipientId'], $data['content']);
+                break;
+
+            default:
+                echo "Action inconnue : {$data['action']}\n";
+        }
+    }
 
     public function onClose(ConnectionInterface $conn) {
         $userId = $this->clients[$conn]["userId"] ?? "Inconnu";
         $this->clients->detach($conn);
-        echo "Utilisateur {$userId} d\u00e9connect\u00e9 ({$conn->resourceId})\n";
+        echo "Utilisateur {$userId} déconnecté ({$conn->resourceId})\n";
+
+        // Diffuser la liste des utilisateurs
+        $this->broadcastUserList();
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
@@ -90,59 +57,41 @@ class Chat implements MessageComponentInterface {
         $conn->close();
     }
 
-    
-
-    private function broadcastUserList(){
-        $online_users = [];
-       
-        //il faut récupérer les ID des utilisateurs connectés
-        foreach ($this->clients as $client) {
-            if(!is_null($this->clients[$client]["userId"])){
-                $online_users[] = $this->clients[$client]["userId"];
-            }
-        }
-
-        // Envoie la liste des utilisateurs à tous les clients
-    foreach ($this->clients as $client) {
-        $client->send(json_encode([
-            "action" => "online_users",
-            "users" => $online_users
-        ]));
-    }
-
-    }
-
-
-    private function sendUserListToClient(ConnectionInterface $client) {
+    private function broadcastUserList() {
         $userList = [];
-    
-        // Récupère les IDs des utilisateurs connectés
-        foreach ($this->clients as $conn) {
-            if (!is_null($this->clients[$conn]["userId"])) {
-                $userList[] = $this->clients[$conn]["userId"];
+        foreach ($this->clients as $client) {
+            if (isset($this->clients[$client]["userId"])) {
+                $userList[] = $this->clients[$client]["userId"];
             }
         }
-    
-        // Envoie la liste des utilisateurs à ce client uniquement
-        $client->send(json_encode([
-            "action" => "userList",
-            "users" => $userList
-        ]));
+
+        foreach ($this->clients as $client) {
+            $client->send(json_encode([
+                "action" => "userList",
+                "users" => $userList
+            ]));
+        }
     }
 
-   
+    private function sendMessageToRecipient(ConnectionInterface $from, $recipientId, $content) {
+        foreach ($this->clients as $client) {
+            if ($this->clients[$client]["userId"] === $recipientId) {
+                $client->send(json_encode([
+                    "from" => $this->clients[$from]["userId"],
+                    "content" => $content
+                ]));
+                echo "Message envoyé de {$this->clients[$from]["userId"]} à {$recipientId} : {$content}\n";
+                return;
+            }
+        }
 
-
+        echo "Utilisateur {$recipientId} introuvable\n";
+    }
 }
 
-
-use Ratchet\Http\HttpServer;
-use Ratchet\WebSocket\WsServer;
-use Ratchet\Server\IoServer;
-
-$server = IoServer::factory(
-    new HttpServer(
-        new WsServer(
+$server = Ratchet\Server\IoServer::factory(
+    new Ratchet\Http\HttpServer(
+        new Ratchet\WebSocket\WsServer(
             new Chat()
         )
     ),
