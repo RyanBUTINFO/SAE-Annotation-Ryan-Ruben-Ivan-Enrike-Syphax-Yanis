@@ -12,7 +12,7 @@ class Chat implements MessageComponentInterface {
 
     public function onOpen(ConnectionInterface $conn) {
         // Stocke la connexion nouvellement ouverte
-        $this->clients->attach($conn);
+        $this->clients->attach($conn,["userId" => null]);
         echo "Nouvelle connexion ({$conn->resourceId})\n";
     }
 
@@ -22,33 +22,59 @@ class Chat implements MessageComponentInterface {
         // Décoder le message JSON
         $data = json_decode($msg, true);
 
-        // Vérifier l'action
-        if ($data['action'] === 'sendMessage') {
-            $senderId = $data['senderId'];
-            $recipientId = $data['recipientId'];
-            $content = $data['content'];
+        if (!isset($data['action'])) {
+            echo "Erreur : action non spécifiée\n";
+            return;
+        }
 
-            // Logique pour transmettre le message uniquement aux destinataires
-            foreach ($this->clients as $client) {
-                if (isset($client->userId) && $client->userId == $recipientId) {
-                    $client->send(json_encode([
-                        'action' => 'newMessage',
-                        'senderId' => $senderId,
-                        'content' => $content,
-                        'timestamp' => date('Y-m-d H:i:s')
-                    ]));
+        switch ($data['action']) {
+            case 'register':
+                if (isset($data['userId'])) {
+                    $this->clients[$from]["userId"] = $data['userId'];
+                    echo "Utilisateur {$data['userId']} enregistré\n";
+                } else {
+                    echo "Erreur : userId manquant\n";
                 }
-            }
-        } elseif ($data['action'] === 'register') {
-            // Enregistre l'utilisateur connecté
-            $from->userId = $data['userId'];
-            echo "Utilisateur {$data['userId']} enregistré\n";
+                break;
+
+            case 'sendMessage':
+                if (isset($data['recipientId'], $data['content'])) {
+                    $this->sendMessageToRecipient($from, $data['recipientId'], $data['content']);
+                } else {
+                    echo "Erreur : recipientId ou content manquant\n";
+                }
+                break;
+
+            default:
+                echo "Action inconnue : {$data['action']}\n";
         }
     }
 
+
+
+    private function sendMessageToRecipient(ConnectionInterface $from, $recipientId, $content) {
+        $senderId = $this->clients[$from]["userId"] ?? "Inconnu";
+
+        foreach ($this->clients as $client) {
+            if ($this->clients[$client]["userId"] === $recipientId) {
+                $client->send(json_encode([
+                    "from" => $senderId,
+                    "content" => $content
+                ]));
+                echo "Message de {$senderId} \u00e0 {$recipientId} : {$content}\n";
+                return;
+            }
+        }
+
+        echo "Erreur : destinataire {$recipientId} introuvable\n";
+    }
+
+        
+
     public function onClose(ConnectionInterface $conn) {
+        $userId = $this->clients[$conn]["userId"] ?? "Inconnu";
         $this->clients->detach($conn);
-        echo "Connexion fermée ({$conn->resourceId})\n";
+        echo "Utilisateur {$userId} d\u00e9connect\u00e9 ({$conn->resourceId})\n";
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
