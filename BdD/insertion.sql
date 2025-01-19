@@ -1,7 +1,7 @@
 -- Insérer des utilisateurs fictifs
 INSERT INTO Users (username, password_hash, email, created_at, last_online_at) VALUES
-('RubenDubord', '$2y$10$eImG4mjOZO1Zh1MwQx4AOO9uazMv6ZR8S5WI4e.cBF9XBt8MOqta6', 'johndoe@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('YanisNait', '$2y$10$Kb6R3eOiyIHDwQMIb5MfEuvNMA44J6Njw3IJ7wZezvFbdXeQUw2Fa', 'janesmith@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+('JohnDoe', '$2y$10$eImG4mjOZO1Zh1MwQx4AOO9uazMv6ZR8S5WI4e.cBF9XBt8MOqta6', 'johndoe@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('JaneSmith', '$2y$10$Kb6R3eOiyIHDwQMIb5MfEuvNMA44J6Njw3IJ7wZezvFbdXeQUw2Fa', 'janesmith@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Insérer des statuts d'utilisateurs
 INSERT INTO UserStatus (user_id, is_online, last_active_at) VALUES
