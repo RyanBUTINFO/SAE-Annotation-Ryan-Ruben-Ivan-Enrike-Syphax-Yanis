@@ -70,8 +70,8 @@ class Model
         return $req->fetchColumn() > 0; // Vérifie si le nombre d'enregistrements est supérieur à 0
     }
     
-public function createAccount($username, $password, $email)
-{
+    public function createAccount($username, $password, $email)
+    {
     $req = $this->bd->prepare('
         INSERT INTO Users (username, password_hash, email, created_at, last_online_at) 
         VALUES (:username, :password, :email, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
@@ -85,11 +85,11 @@ public function createAccount($username, $password, $email)
     session_start();
     $_SESSION['user_id'] = $this->bd->lastInsertId();
     $_SESSION['username'] = $username;
-}
+    }
 
 
-public function connectToAccount($email, $password)
-{
+    public function connectToAccount($email, $password)
+    {
     $req = $this->bd->prepare('SELECT * FROM Users WHERE email = :email');
     $req->execute([':email' => $email]);
     $user = $req->fetch(PDO::FETCH_ASSOC);
@@ -108,17 +108,17 @@ public function connectToAccount($email, $password)
     } else {
         throw new Exception('Identifiants de connexion incorrects.');
     }
-}
+    }
 
 
-public function getUsername($userId)
-{
+    public function getUsername($userId)
+    {
     $req = $this->bd->prepare('SELECT username FROM Users WHERE user_id = :user_id');
     $req->execute([':user_id' => $userId]);
     return $req->fetchColumn();
-}
-public function getMessagesFromContentInConversation($conversationId, $searchContent = '')
-{
+    }
+    public function getMessagesFromContentInConversation($conversationId, $searchContent = '')
+    {
     $req = $this->bd->prepare('
         SELECT * FROM Messages 
         WHERE conversation_id = :conversationId 
@@ -130,7 +130,7 @@ public function getMessagesFromContentInConversation($conversationId, $searchCon
         ':searchContent' => '%' . $searchContent . '%'
     ]);
     return $req->fetchAll(PDO::FETCH_ASSOC);
-}
+    }
 
 
 }
