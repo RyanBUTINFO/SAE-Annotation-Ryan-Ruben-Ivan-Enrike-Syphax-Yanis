@@ -6,8 +6,11 @@ socket.onopen = () => {
 
 socket.onmessage = (event) => {
     const data = JSON.parse(event.data);
+
     if (data.action === 'newMessage') {
         displayMessage(data);
+    } else if (data.action === 'newAnnotation') {
+        updateAnnotation(data);
     }
 };
 
@@ -22,12 +25,24 @@ function sendMessage() {
         receiverId: currentConversationId,
         annotation
     }));
+
+    document.getElementById('content').value = '';
 }
 
 function displayMessage(data) {
     const container = document.getElementById('messages');
     const div = document.createElement('div');
     div.className = data.senderId === currentUserId ? 'message sent' : 'message received';
-    div.innerHTML = `<p>${data.content}</p><span>${data.annotation}</span>`;
+    div.innerHTML = `<p>${data.content}</p><span>${data.annotation || ''}</span>`;
     container.appendChild(div);
+}
+
+function updateAnnotation(data) {
+    const messageDiv = document.querySelector(`div[data-id='${data.messageId}']`);
+    if (messageDiv) {
+        const span = messageDiv.querySelector('.annotation');
+        if (span) {
+            span.textContent = `Emo: ${data.emotion}`;
+        }
+    }
 }
