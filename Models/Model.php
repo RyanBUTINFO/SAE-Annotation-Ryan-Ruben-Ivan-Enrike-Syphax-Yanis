@@ -64,12 +64,12 @@ class Model
 
 
     public function checkMailExists($email)
-{
-    $req = $this->bd->prepare('SELECT COUNT(*) FROM Users WHERE email = :email');
-    $req->execute([':email' => $email]);
-    return $req->fetchColumn() > 0;
-}
-
+    {
+        $req = $this->bd->prepare('SELECT COUNT(*) FROM Users WHERE email = :email');
+        $req->execute([':email' => $email]);
+        return $req->fetchColumn() > 0; // Vérifie si le nombre d'enregistrements est supérieur à 0
+    }
+    
 public function createAccount($username, $password, $email)
 {
     $req = $this->bd->prepare('
