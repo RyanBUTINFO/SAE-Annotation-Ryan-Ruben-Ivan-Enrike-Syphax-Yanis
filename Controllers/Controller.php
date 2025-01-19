@@ -1,6 +1,5 @@
 <?php
 
-
 abstract class Controller
 {
     /**
@@ -8,14 +7,13 @@ abstract class Controller
      */
     public function __construct()
     {
-
-        //On détermine s'il existe dans l'url un paramètre action correspondant à une action du contrôleur
-        if (isset($_GET['action']) and method_exists($this, "action_" . $_GET["action"])) {
-            //Si c'est le cas, on appelle cette action
+        // On détermine s'il existe dans l'URL un paramètre action correspondant à une action du contrôleur
+        if (isset($_GET['action']) && method_exists($this, "action_" . $_GET["action"])) {
+            // Si c'est le cas, on appelle cette action
             $action = "action_" . $_GET["action"];
             $this->$action();
         } else {
-            //Sinon, on appelle l'action par défaut
+            // Sinon, on appelle l'action par défaut
             $this->action_default();
         }
     }
@@ -27,40 +25,45 @@ abstract class Controller
 
     /**
      * Affiche la vue
-     * @param string $vue nom de la vue
-     * @param array $data tableau contenant les données à passer à la vue
-     * @return aucun
+     * @param string $vue Nom de la vue
+     * @param array $data Tableau contenant les données à passer à la vue
      */
     protected function render($vue, $data = [])
     {
-
-        //On extrait les données à afficher
+        // On extrait les données à afficher
         extract($data);
 
-        //On teste si la vue existe
+        // On teste si la vue existe
         $file_name = "Views/view_" . $vue . '.php';
         if (file_exists($file_name)) {
-            //Si oui, on l'affiche
+            // Si oui, on l'affiche
             include $file_name;
         } else {
-            //Sinon, on affiche la page d'->action_error
-            $this->action_error("La vue n'existe pas !");
+            // Sinon, on affiche la page d'erreur
+            $this->action_error("La vue '$vue' n'existe pas !");
         }
-        // Pour terminer le script
-        die();
+        // Terminer le script
+        exit;
     }
 
     /**
      * Méthode affichant une page d'erreur
      * @param string $message Message d'erreur à afficher
-     * @return aucun
      */
     protected function action_error($message = '')
     {
-        $data = [
-            'title' => "Error",
-            'message' => $message,
-        ];
-        $this->render("message", $data);
+        // Vérifie si la vue "message" existe avant de la rendre
+        $file_name = "Views/view_message.php";
+        if (file_exists($file_name)) {
+            $data = [
+                'title' => "Erreur",
+                'message' => $message ?: "Une erreur est survenue.",
+            ];
+            $this->render("message", $data);
+        } else {
+            // Si la vue "message" n'existe pas, afficher un message simple
+            echo $message ?: "Une erreur est survenue.";
+        }
+        exit;
     }
 }

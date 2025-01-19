@@ -37,30 +37,45 @@ class Model
     /**
      * Ajoute un message avec émotion (et des annotations si fournies)
      */
-    public function addMessageWithEmotion($content, $sentAt, $senderId, $receiverId, $annotationSender = null, $annotationRecipient = null): int {
-        $req = $this->bd->prepare('INSERT INTO Messages (content, created_at, sender_id, receiver_id) 
-                                   VALUES (:content, :sentAt, :senderId, :receiverId)');
-        $req->execute([
-            ':content' => $content,
-            ':sentAt' => $sentAt,
-            ':senderId' => $senderId,
-            ':receiverId' => $receiverId
-        ]);
+    public function addMessageWithEmotion(
+        $content,
+        $sentAt,
+        $senderId,
+        $receiverId,
+        $annotationSender = null,
+        $annotationRecipient = null
+    ): int {
+        try {
+            // Insérer le message dans la table Messages
+            $req = $this->bd->prepare('INSERT INTO Messages (content, created_at, sender_id, receiver_id) 
+                                       VALUES (:content, :sentAt, :senderId, :receiverId)');
+            $req->execute([
+                ':content' => $content,
+                ':sentAt' => $sentAt,
+                ':senderId' => $senderId,
+                ':receiverId' => $receiverId
+            ]);
     
-        // Récupérer l'ID du message inséré
-        $messageId = (int)$this->bd->lastInsertId();
+            // Récupérer l'ID du message inséré
+            $messageId = (int)$this->bd->lastInsertId();
     
-        // Si des annotations sont fournies, les ajouter
-        if ($annotationSender) {
-            $this->addAnnotation($messageId, $senderId, $annotationSender);
+            // Si des annotations sont fournies, les ajouter
+            if ($annotationSender) {
+                $this->addAnnotation($messageId, $senderId, $annotationSender);
+            }
+            if ($annotationRecipient) {
+                $this->addAnnotation($messageId, $receiverId, $annotationRecipient);
+            }
+    
+            // Retourner l'ID du message
+            return $messageId;
+    
+        } catch (PDOException $e) {
+            // Gérer les erreurs SQL
+            throw new Exception("Erreur lors de l'ajout du message : " . $e->getMessage());
         }
-        if ($annotationRecipient) {
-            $this->addAnnotation($messageId, $receiverId, $annotationRecipient);
-        }
-    
-        // Retourner l'ID du message
-        return $messageId;
     }
+    
     /**
      * Ajoute une annotation pour un message donné
      */
@@ -73,6 +88,18 @@ class Model
             ':emotion' => $emotion
         ]);
     }
+
+    /**
+ * Récupère les messages contenant un certain contenu dans une conversation spécifique
+ */
+    public function getMessagesFromContentInConversation($conversationId, $searchContent = '') {
+        $req = $this->bd->prepare('SELECT * FROM Messages WHERE conversation_id = :conversationId AND content LIKE :searchContent ORDER BY created_at ASC');
+        $req->execute([
+        ':conversationId' => $conversationId,
+        ':searchContent' => '%' . $searchContent . '%', // Rechercher une correspondance partielle
+    ]);
+    return $req->fetchAll(PDO::FETCH_ASSOC);
+}
 
     /**
      * Récupère les messages d'une conversation donnée
