@@ -3,6 +3,11 @@
 // Inclusion du modèle
 require_once "Models/Model.php";
 
+// Inclusion du modèle
+
+require_once "Controllers/Controller.php";
+
+
 // Liste des contrôleurs
 $controllers = ["accueil", "parametres", "compte", "message"];
 

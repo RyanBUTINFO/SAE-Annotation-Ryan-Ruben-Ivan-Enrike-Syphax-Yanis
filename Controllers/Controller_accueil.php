@@ -1,4 +1,7 @@
 <?php
+
+require_once 'Controller.php'; // Assurez-vous que le chemin est correct
+
 class Controller_accueil extends Controller {
     public function action_default() {
         $m = Model::getModel();
