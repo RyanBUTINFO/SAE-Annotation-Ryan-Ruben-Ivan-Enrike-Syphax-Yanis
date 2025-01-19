@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Messages</title>
-    <link rel="stylesheet" href="Content/css/message.css">
-    <script src="Content/js/websocket.js"></script>
+    <link rel="stylesheet" href="Content/message.css">
+    <script src="Content/websocket.js"></script>
 </head>
 <body>
     <header>
@@ -24,16 +24,15 @@
         </section>
 
         <section id="send-message">
-            <form id="send-message-form" onsubmit="return false;">
-                <textarea id="content" placeholder="Votre message" required></textarea>
+            <form id="send-message-form">
+                <textarea id="content" placeholder="Votre message"></textarea>
                 <select id="annotation">
-                    <option value="" disabled selected>Ajouter une annotation</option>
-                    <option value="joie">Joie 😊</option>
-                    <option value="colère">Colère 😡</option>
-                    <option value="tristesse">Tristesse 😢</option>
-                    <option value="surprise">Surprise 😲</option>
-                    <option value="dégoût">Dégoût 🤢</option>
-                    <option value="peur">Peur 😱</option>
+                    <option value="joie">Joie</option>
+                    <option value="colère">Colère</option>
+                    <option value="tristesse">Tristesse</option>
+                    <option value="surprise">Surprise</option>
+                    <option value="dégoût">Dégoût</option>
+                    <option value="peur">Peur</option>
                 </select>
                 <button type="button" onclick="sendMessage()">Envoyer</button>
             </form>
