@@ -1,3 +1,6 @@
+-- Sélectionner la base de données
+USE annotiverse;
+
 -- Supprimer les tables existantes dans le bon ordre pour éviter les erreurs de contrainte
 DROP TABLE IF EXISTS Annotation;
 DROP TABLE IF EXISTS Messages;
