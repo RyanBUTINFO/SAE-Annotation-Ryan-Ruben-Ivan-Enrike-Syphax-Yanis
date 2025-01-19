@@ -1,10 +1,7 @@
--- 1. script.sql
-
--- Suppression des anciens objets pour éviter les conflits
+-- Supprimer les tables existantes si elles existent pour recommencer
 DROP TABLE IF EXISTS Annotation, Messages, Conversation, UserStatus, Users;
-DROP TYPE IF EXISTS emotions;
 
--- Création des tables nécessaires
+-- Créer la table des utilisateurs
 CREATE TABLE Users (
     user_id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
@@ -12,39 +9,46 @@ CREATE TABLE Users (
     email VARCHAR(100) NOT NULL UNIQUE,
     created_at TIMESTAMP,
     last_online_at TIMESTAMP
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- Créer la table pour le statut des utilisateurs
+CREATE TABLE UserStatus (
+    user_id INT PRIMARY KEY,
+    is_online BOOLEAN,
+    last_active_at TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- Créer la table des conversations
 CREATE TABLE Conversation (
-    conversation_id SERIAL PRIMARY KEY,
-    user_1_id INT NOT NULL,
-    user_2_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    conversation_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_1_id INT,
+    user_2_id INT,
+    created_at TIMESTAMP,
     FOREIGN KEY (user_1_id) REFERENCES Users(user_id),
     FOREIGN KEY (user_2_id) REFERENCES Users(user_id)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- Créer la table des messages
 CREATE TABLE Messages (
-    message_id SERIAL PRIMARY KEY,
-    conversation_id INT NOT NULL,
-    sender_id INT NOT NULL,
-    receiver_id INT NOT NULL,
-    content TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    message_id INT AUTO_INCREMENT PRIMARY KEY,
+    conversation_id INT,
+    sender_id INT,
+    receiver_id INT,
+    content TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    created_at TIMESTAMP,
     FOREIGN KEY (conversation_id) REFERENCES Conversation(conversation_id),
     FOREIGN KEY (sender_id) REFERENCES Users(user_id),
     FOREIGN KEY (receiver_id) REFERENCES Users(user_id)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-CREATE TYPE emotions AS ENUM (
-    'joie', 'colère', 'tristesse', 'surprise', 'dégoût', 'peur'
-);
-
+-- Créer la table des annotations
 CREATE TABLE Annotation (
-    annotation_id SERIAL PRIMARY KEY,
-    message_id INT NOT NULL,
-    annotator_id INT NOT NULL,
-    emotion emotions NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    annotation_id INT AUTO_INCREMENT PRIMARY KEY,
+    message_id INT,
+    annotator_id INT,
+    emotion ENUM('joie', 'colère', 'tristesse', 'surprise', 'dégoût', 'peur') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    created_at TIMESTAMP,
     FOREIGN KEY (message_id) REFERENCES Messages(message_id),
     FOREIGN KEY (annotator_id) REFERENCES Users(user_id)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
