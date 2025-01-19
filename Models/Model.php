@@ -20,7 +20,7 @@ class Model
         include "credentials.php";
         $this->bd = new PDO($dsn, $login, $password);
         $this->bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->bd->query("SET NAMES 'utf8'");
+        $this->bd->exec("SET NAMES 'utf8'");
     }
 
     /**
@@ -34,102 +34,122 @@ class Model
         return self::$instance;
     }
 
-    public function getMessagesFromEmotionInConversation()
-    {
-        $req = $this->bd->prepare('SELECT m.* FROM Messages m
-        INNER JOIN Annotation a ON m.message_id = a.message_id
-        WHERE a.emotion = :emotion
-        AND m.conversation_id = :conversation_id');
-
-        $req->execute(array(':emotion' => $_POST['search_emotion'],
-        ':conversation_id' => $_POST['current_conv']));
-        $data = $req->fetchAll();
-        return $data;
-    }
-
-    public function addMessageWithEmotion(){
-
-        $req = $this->bd->prepare('INSERT INTO TABLE message_ VALUES (
-        :message_content,
-        :sent_at,
-        :id_sender,
-        :id_recipient,
-        :annotation_sender,
-        :annotation_recipient)');
-        
-        $req->execute(array(':message_content' => $_POST['message_content'],
-        ':sent_at'=> $_POST['sent_at'],
-        ':id_sender'=> $_POST['id_sender'],
-        ':id_recipient'=> $_POST['id_recipient'],
-        ':annotation_sender'=> $_POST['annotation_sender'],
-        ':annotation_recipient'=> $_POST['annotation_recipient']));
-
-        return $req->fetchAll();
-    }
-
-    public function getMessagesFromContentInConversation(){
-        $req = $this->bd->prepare('SELECT * FROM Messages m
-        INNER JOIN Conversation c ON c.conversation_id = m.conversation_id
-        WHERE c.conversation = :conversation');
-        $req->execute(array(':conversation' => $_POST['current_conv']));
-        $data = $req->fetchAll();
-        $res = [];
-        $er = '/^.' . $_POST['search_content'] . '.$/';
-        foreach($data as $ligne){
-            if (preg_match($er,$ligne['content'])){
-                array_push($res, $ligne);
-            }
-        }
-        if (count($res) == 0){
-            return "Aucun message correspondant.";
-        }
-        else{
-            return $res;
-        }
-    }
-    public function annotateMessageSent(){
-        $req = $this->bd->prepare('UPDATE message_ SET annotation_sender = :annotation WHERE id_message = :id_msg');
-        $req->execute(array(':annotation' => htmlspecialchars($_POST['annotation']),
-        ':id_msg' => htmlspecialchars($_POST['message_id'])));
-    }
-
-    public function createAccount(){
-        $req = $this->bd->prepare('INSERT INTO Users VALUES (DEFAULT, :username, :password, :email, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)');
-        $req->execute([':username' => htmlspecialchars($_POST['username']),
-            ':password' => password_hash($_POST['password'],PASSWORD_ARGON2ID),
-            ":email" => htmlspecialchars($_POST['mail'])]
-        );
-
-            session_start();
-            $_SESSION['user_id'] = $this->bd->lastInsertId();
-            $_SESSION['username'] = $_POST['username'];
-    }
-
-    public function connectToAccount() {
-        $req = $this->bd->prepare("SELECT * FROM Users WHERE email = :email");
-        $req->execute(array(':email' => $_POST['mail']));
-        $user = $req->fetch(PDO::FETCH_ASSOC);
+    /**
+     * Ajoute un message avec émotion (et des annotations si fournies)
+     */
+    public function addMessageWithEmotion($content, $sentAt, $senderId, $receiverId, $annotationSender = null, $annotationRecipient = null): int {
+        $req = $this->bd->prepare('INSERT INTO Messages (content, created_at, sender_id, receiver_id) 
+                                   VALUES (:content, :sentAt, :senderId, :receiverId)');
+        $req->execute([
+            ':content' => $content,
+            ':sentAt' => $sentAt,
+            ':senderId' => $senderId,
+            ':receiverId' => $receiverId
+        ]);
     
-        if ($user && password_verify($_POST['password'], $user['password_hash'])) {
-            
+        // Récupérer l'ID du message inséré
+        $messageId = (int)$this->bd->lastInsertId();
+    
+        // Si des annotations sont fournies, les ajouter
+        if ($annotationSender) {
+            $this->addAnnotation($messageId, $senderId, $annotationSender);
+        }
+        if ($annotationRecipient) {
+            $this->addAnnotation($messageId, $receiverId, $annotationRecipient);
+        }
+    
+        // Retourner l'ID du message
+        return $messageId;
+    }
+    /**
+     * Ajoute une annotation pour un message donné
+     */
+    public function addAnnotation($messageId, $annotatorId, $emotion) {
+        $req = $this->bd->prepare('INSERT INTO Annotation (message_id, annotator_id, emotion, created_at) 
+                                   VALUES (:messageId, :annotatorId, :emotion, CURRENT_TIMESTAMP)');
+        $req->execute([
+            ':messageId' => $messageId,
+            ':annotatorId' => $annotatorId,
+            ':emotion' => $emotion
+        ]);
+    }
+
+    /**
+     * Récupère les messages d'une conversation donnée
+     */
+    public function getMessagesFromConversation($conversationId) {
+        $req = $this->bd->prepare('SELECT * FROM Messages WHERE conversation_id = :conversationId ORDER BY created_at ASC');
+        $req->execute([':conversationId' => $conversationId]);
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Récupère les messages d'une conversation avec une émotion spécifique
+     */
+    public function getMessagesFromEmotionInConversation($conversationId, $emotion) {
+        $req = $this->bd->prepare('SELECT m.* FROM Messages m
+                                   INNER JOIN Annotation a ON m.message_id = a.message_id
+                                   WHERE a.emotion = :emotion
+                                   AND m.conversation_id = :conversation_id');
+        $req->execute([
+            ':emotion' => $emotion,
+            ':conversation_id' => $conversationId
+        ]);
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Crée un compte utilisateur
+     */
+    public function createAccount($username, $password, $email) {
+        $req = $this->bd->prepare('INSERT INTO Users (username, password_hash, email, created_at, last_online_at) 
+                                   VALUES (:username, :password, :email, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)');
+        $req->execute([
+            ':username' => htmlspecialchars($username),
+            ':password' => password_hash($password, PASSWORD_ARGON2ID),
+            ':email' => htmlspecialchars($email)
+        ]);
+
+        session_start();
+        $_SESSION['user_id'] = $this->bd->lastInsertId();
+        $_SESSION['username'] = $username;
+    }
+
+    /**
+     * Connecte un utilisateur à son compte
+     */
+    public function connectToAccount($email, $password) {
+        $req = $this->bd->prepare("SELECT * FROM Users WHERE email = :email");
+        $req->execute([':email' => $email]);
+        $user = $req->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && password_verify($password, $user['password_hash'])) {
             $update = $this->bd->prepare("UPDATE Users SET last_online_at = CURRENT_TIMESTAMP WHERE user_id = :user_id");
-            $update->execute(array(':user_id' => $user['user_id']));
-            
+            $update->execute([':user_id' => $user['user_id']]);
+
             session_start();
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['username'] = $user['username'];
+        } else {
+            throw new Exception("Invalid login credentials.");
         }
     }
 
-    public function checkMailExists($mail) {
+    /**
+     * Vérifie si un email existe dans la base de données
+     */
+    public function checkMailExists($email) {
         $req = $this->bd->prepare('SELECT COUNT(*) FROM Users WHERE email = :email');
-        $req->execute(array(':email' => $mail));
+        $req->execute([':email' => $email]);
         return $req->fetchColumn() > 0;
     }
 
-    public function getUsername() {
+    /**
+     * Récupère le nom d'utilisateur d'un utilisateur connecté
+     */
+    public function getUsername($userId) {
         $req = $this->bd->prepare('SELECT username FROM Users WHERE user_id = :user_id');
-        $req->execute(array(':user_id' => $_SESSION['user_id']));
+        $req->execute([':user_id' => $userId]);
         return $req->fetchColumn();
     }
 }
